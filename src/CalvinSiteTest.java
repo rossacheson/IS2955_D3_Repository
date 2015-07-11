@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /*
  * As a <role>
@@ -98,11 +100,53 @@ public class CalvinSiteTest {
 
 		driver.get("http://www.calvin.edu/about/administration/");
 		// get the first instance of the class containing the president's pic
-		WebElement c = driver.findElement(By.className("large-4"));
+		WebElement container = driver.findElement(By.className("large-4"));
 		// get the first img within WebElement c, which is the President's pic
-		WebElement e = c.findElement(By.tagName("img"));
-		String picAltText = e.getAttribute("alt");
+		WebElement presPic = container.findElement(By.tagName("img"));
+		String picAltText = presPic.getAttribute("alt");
 		assertTrue(picAltText.contains("Michael K. Le Roy"));
+	}
+
+	/*
+	 * As a user I want to be able to search the Calvin web site So that I can
+	 * find resources related to my area of interest
+	 * 
+	 * @author Ross Acheson
+	 */
+
+	// Given that I am on the main page
+	// When I view it
+	// Then the search box should be visible
+	@Test
+	public void testSearchBoxDisplays() {
+		WebElement searchBox = driver.findElement(By.id("GoogleSearch"));
+		assertTrue(searchBox.isDisplayed());
+	}
+
+	// Given that I am on the main page
+	// When I type Ghana in the search box
+	// Then the the Ghana program should show up in the search results
+	@Test
+	public void testSearchReturnsQualityResult() {
+		driver.findElement(By.id("query")).sendKeys("Ghana");
+		WebElement submitQuery = driver.findElement(By.name("btnG"));
+		submitQuery.click();
+
+		try {
+			WebElement myDynamicElement = (new WebDriverWait(driver, 30))
+					.until(ExpectedConditions.presenceOfElementLocated(By
+							.className("gsc-url-bottom")));
+		} catch (TimeoutException nseex) {
+		}
+
+		// Check for at least one link including the word "Ghana" - if not
+		// found, fail the test
+
+		try {
+			driver.findElement(By.partialLinkText("Ghana"));
+		} catch (NoSuchElementException nseex) {
+			fail();
+		}
 	}
 
 	/*
