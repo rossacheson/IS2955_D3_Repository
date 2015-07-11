@@ -69,81 +69,101 @@ public class CalvinSiteTest {
 		}
 	}
 
-	// Given that I am on the main page
-	// When I view the title
-	// Then I see that it contains the word "reddit"
+	/*
+	 * As a member of the college staff I want pictures of me to include an alt
+	 * text with my name So that I can be found via google image searches, so as
+	 * to have a bolstered professional online presence
+	 * 
+	 * @author Ross Acheson
+	 */
+
+	// Given that I am on the Provost contact page
+	// When I inspect the Provost's picture,
+	// Then I see that the alt text contains her name
 	@Test
-	public void testShowsCorrectTitle() {
+	public void testProvostPicAltText() {
 
-		// Simply check that the title contains the word "reddit"
-
-		String title = driver.getTitle();
-		assertTrue(title.contains("reddit"));
+		driver.get("http://www.calvin.edu/admin/provost/contact.html");
+		// get the first instance of the "img-right" class (the provost's pic)
+		WebElement e = driver.findElement(By.className("img-right"));
+		String picAltText = e.getAttribute("alt");
+		assertTrue(picAltText.contains("Cheryl Brandsen"));
 	}
 
-	// Given that I am on the main page
-	// When I view the Remember Me section
-	// Then I should see that it contains the phrase "remember me"
+	// Given that I am on the Administration about page
+	// When I inspect the President's picture,
+	// Then I see that the alt text contains his name
 	@Test
-	public void testHasRememberMe() {
+	public void testPresidentPicAltText() {
 
-		// Check that there is a remember-me element
-		// that contains the text "remember me"
-		// If it does not exist, or text is incorrect, fail test
-
-		try {
-			WebElement e = driver.findElement(By.id("remember-me"));
-			String elementText = e.getText();
-			assertTrue(elementText.contains("remember me"));
-		} catch (NoSuchElementException nseex) {
-			fail();
-		}
+		driver.get("http://www.calvin.edu/about/administration/");
+		// get the first instance of the class containing the president's pic
+		WebElement c = driver.findElement(By.className("large-4"));
+		// get the first img within WebElement c, which is the President's pic
+		WebElement e = c.findElement(By.tagName("img"));
+		String picAltText = e.getAttribute("alt");
+		assertTrue(picAltText.contains("Michael K. Le Roy"));
 	}
 
-	// Given that I am on the main page
-	// When I click on the "new" link
-	// Then I should be redirected to the "new" page
-	@Test
-	public void testSeeNewLinks() {
-
-		// find the "new" link and click on it
-		// The page you go to should include "newest submissions"
-		// in the title
-
-		driver.findElement(By.linkText("new")).click();
-		String newPageTitle = driver.getTitle();
-		assertTrue(newPageTitle.contains("newest submissions"));
-	}
-
-	// Given that I am on the main page
-	// And I am not logged in
-	// When I try to login with an valid username and invalid password
-	// Then I am given the opportunity to reset the password
-	@Test
-	public void testBadPasswordResetLink() {
-
-		// Enter username "meow", password "meow"
-
-		driver.findElement(By.name("user")).sendKeys("meow");
-		driver.findElement(By.name("passwd")).sendKeys("meow");
-
-		// Look for the submit button (in the login div) and click
-		// to attempt to login
-
-		WebElement loginDiv = driver.findElement(By.id("login_login-main"));
-
-		WebElement submitButton = loginDiv.findElement(By.className("btn"));
-		submitButton.click();
-
-		// Check that there is a link to reset password and it is visible
-
-		try {
-			WebElement resetPw = driver.findElement(By
-					.linkText("reset password"));
-			assertTrue(resetPw.isDisplayed());
-		} catch (NoSuchElementException nseex) {
-			fail();
-		}
-	}
+	/*
+	 * // Given that I am on the main page // When I view the title // Then I
+	 * see that it contains the word "reddit"
+	 * 
+	 * @Test public void testShowsCorrectTitle() {
+	 * 
+	 * // Simply check that the title contains the word "reddit"
+	 * 
+	 * String title = driver.getTitle(); assertTrue(title.contains("reddit")); }
+	 * 
+	 * // Given that I am on the main page // When I view the Remember Me
+	 * section // Then I should see that it contains the phrase "remember me"
+	 * 
+	 * @Test public void testHasRememberMe() {
+	 * 
+	 * // Check that there is a remember-me element // that contains the text
+	 * "remember me" // If it does not exist, or text is incorrect, fail test
+	 * 
+	 * try { WebElement e = driver.findElement(By.id("remember-me")); String
+	 * elementText = e.getText();
+	 * assertTrue(elementText.contains("remember me")); } catch
+	 * (NoSuchElementException nseex) { fail(); } }
+	 * 
+	 * // Given that I am on the main page // When I click on the "new" link //
+	 * Then I should be redirected to the "new" page
+	 * 
+	 * @Test public void testSeeNewLinks() {
+	 * 
+	 * // find the "new" link and click on it // The page you go to should
+	 * include "newest submissions" // in the title
+	 * 
+	 * driver.findElement(By.linkText("new")).click(); String newPageTitle =
+	 * driver.getTitle();
+	 * assertTrue(newPageTitle.contains("newest submissions")); }
+	 * 
+	 * // Given that I am on the main page // And I am not logged in // When I
+	 * try to login with an valid username and invalid password // Then I am
+	 * given the opportunity to reset the password
+	 * 
+	 * @Test public void testBadPasswordResetLink() {
+	 * 
+	 * // Enter username "meow", password "meow"
+	 * 
+	 * driver.findElement(By.name("user")).sendKeys("meow");
+	 * driver.findElement(By.name("passwd")).sendKeys("meow");
+	 * 
+	 * // Look for the submit button (in the login div) and click // to attempt
+	 * to login
+	 * 
+	 * WebElement loginDiv = driver.findElement(By.id("login_login-main"));
+	 * 
+	 * WebElement submitButton = loginDiv.findElement(By.className("btn"));
+	 * submitButton.click();
+	 * 
+	 * // Check that there is a link to reset password and it is visible
+	 * 
+	 * try { WebElement resetPw = driver.findElement(By
+	 * .linkText("reset password")); assertTrue(resetPw.isDisplayed()); } catch
+	 * (NoSuchElementException nseex) { fail(); } }
+	 */
 
 }
