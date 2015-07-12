@@ -124,29 +124,15 @@ public class CalvinSiteTest {
 	}
 
 	// Given that I am on the main page
-	// When I type Ghana in the search box
-	// Then the the Ghana program should show up in the search results
+	// When I type something in the search box and click on the magnifying glass
+	// Then I should be directed to the search page
 	@Test
-	public void testSearchReturnsQualityResult() {
+	public void testSearchGoesToSearchPage() {
 		driver.findElement(By.id("query")).sendKeys("Ghana");
 		WebElement submitQuery = driver.findElement(By.name("btnG"));
 		submitQuery.click();
-
-		try {
-			WebElement myDynamicElement = (new WebDriverWait(driver, 30))
-					.until(ExpectedConditions.presenceOfElementLocated(By
-							.className("gsc-url-bottom")));
-		} catch (TimeoutException nseex) {
-		}
-
-		// Check for at least one link including the word "Ghana" - if not
-		// found, fail the test
-
-		try {
-			driver.findElement(By.partialLinkText("Ghana"));
-		} catch (NoSuchElementException nseex) {
-			fail();
-		}
+		String title = driver.getTitle(); 
+		assertTrue(title.contains("Search"));
 	}
 
 	/*
