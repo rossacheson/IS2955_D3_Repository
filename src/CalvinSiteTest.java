@@ -4,21 +4,21 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 /*
- * As a <role>
- * I want...
- * So that...
+ * As a student
+ * I want to work hard
+ * So that I learn well and get a good grade
  * @author Ross Acheson
  *
  */
 
-//https://github.com/laboon/infsci2955/blob/master/sample_code/RedditTest.java
 public class CalvinSiteTest {
 
 	static WebDriver driver = new HtmlUnitDriver();
+	static WebDriver foxDriver = new FirefoxDriver();
+	static WebDriver foxDriver2 = new FirefoxDriver();
 
 	// Start at the home page for Calvin for each test
 	@Before
@@ -27,7 +27,8 @@ public class CalvinSiteTest {
 	}
 
 	/*
-	 * As a user I want to see a set of options specific to me on the home page
+	 * As a user 
+	 * I want to see a set of options specific to me on the home page
 	 * So that I can find resources that are relevant to me quickly and easily
 	 * 
 	 * @author Ross Acheson
@@ -72,9 +73,9 @@ public class CalvinSiteTest {
 	}
 
 	/*
-	 * As a member of the college staff I want pictures of me to include an alt
-	 * text with my name So that I can be found via google image searches, so as
-	 * to have a bolstered professional online presence
+	 * As a member of the college staff 
+	 * I want pictures of me to include an alt text with my name 
+	 * So that I can be found via google image searches, and have a bolstered professional online presence
 	 * 
 	 * @author Ross Acheson
 	 */
@@ -108,8 +109,9 @@ public class CalvinSiteTest {
 	}
 
 	/*
-	 * As a user I want to be able to search the Calvin web site So that I can
-	 * find resources related to my area of interest
+	 * As a user 
+	 * I want to be able to search the Calvin web site 
+	 * So that I can find resources related to my area of interest
 	 * 
 	 * @author Ross Acheson
 	 */
@@ -131,69 +133,104 @@ public class CalvinSiteTest {
 		driver.findElement(By.id("query")).sendKeys("Ghana");
 		WebElement submitQuery = driver.findElement(By.name("btnG"));
 		submitQuery.click();
-		String title = driver.getTitle(); 
+		String title = driver.getTitle();
 		assertTrue(title.contains("Search"));
 	}
 
 	/*
-	 * // Given that I am on the main page // When I view the title // Then I
-	 * see that it contains the word "reddit"
+	 * As a user 
+	 * I want the site to react to screen size 
+	 * So that it is usable and beautiful when accessed from a variety of devices
 	 * 
-	 * @Test public void testShowsCorrectTitle() {
-	 * 
-	 * // Simply check that the title contains the word "reddit"
-	 * 
-	 * String title = driver.getTitle(); assertTrue(title.contains("reddit")); }
-	 * 
-	 * // Given that I am on the main page // When I view the Remember Me
-	 * section // Then I should see that it contains the phrase "remember me"
-	 * 
-	 * @Test public void testHasRememberMe() {
-	 * 
-	 * // Check that there is a remember-me element // that contains the text
-	 * "remember me" // If it does not exist, or text is incorrect, fail test
-	 * 
-	 * try { WebElement e = driver.findElement(By.id("remember-me")); String
-	 * elementText = e.getText();
-	 * assertTrue(elementText.contains("remember me")); } catch
-	 * (NoSuchElementException nseex) { fail(); } }
-	 * 
-	 * // Given that I am on the main page // When I click on the "new" link //
-	 * Then I should be redirected to the "new" page
-	 * 
-	 * @Test public void testSeeNewLinks() {
-	 * 
-	 * // find the "new" link and click on it // The page you go to should
-	 * include "newest submissions" // in the title
-	 * 
-	 * driver.findElement(By.linkText("new")).click(); String newPageTitle =
-	 * driver.getTitle();
-	 * assertTrue(newPageTitle.contains("newest submissions")); }
-	 * 
-	 * // Given that I am on the main page // And I am not logged in // When I
-	 * try to login with an valid username and invalid password // Then I am
-	 * given the opportunity to reset the password
-	 * 
-	 * @Test public void testBadPasswordResetLink() {
-	 * 
-	 * // Enter username "meow", password "meow"
-	 * 
-	 * driver.findElement(By.name("user")).sendKeys("meow");
-	 * driver.findElement(By.name("passwd")).sendKeys("meow");
-	 * 
-	 * // Look for the submit button (in the login div) and click // to attempt
-	 * to login
-	 * 
-	 * WebElement loginDiv = driver.findElement(By.id("login_login-main"));
-	 * 
-	 * WebElement submitButton = loginDiv.findElement(By.className("btn"));
-	 * submitButton.click();
-	 * 
-	 * // Check that there is a link to reset password and it is visible
-	 * 
-	 * try { WebElement resetPw = driver.findElement(By
-	 * .linkText("reset password")); assertTrue(resetPw.isDisplayed()); } catch
-	 * (NoSuchElementException nseex) { fail(); } }
+	 * @author Ross Acheson
 	 */
+
+	// Given that the screen size is 350 x 550
+	// When I view the home page
+	// Then I should see the hamburger icon menu in the upper right
+	@Test
+	public void testHamburgerIconShows() {
+		foxDriver.get("http://www.calvin.edu");
+		Dimension mobileSize = new Dimension(350, 550);
+		foxDriver.manage().window().setSize(mobileSize);
+		WebElement hamburgerIcon = foxDriver.findElement(By
+				.className("menu-icon"));
+		assertTrue(hamburgerIcon.isDisplayed());
+	}
+
+	// Given that the screen size is 1080 x 550
+	// When I view the home page
+	// Then I should /not/ see the hamburger icon menu in the upper right
+	@Test
+	public void testHamburgerIconDoesNotShow() {
+		foxDriver.get("http://www.calvin.edu");
+		Dimension desktopSize = new Dimension(1080, 550);
+		foxDriver.manage().window().setSize(desktopSize);
+		WebElement hamburgerIcon = foxDriver.findElement(By
+				.className("menu-icon"));
+		assertFalse(hamburgerIcon.isDisplayed());
+	}
+
+	/*
+	 * As a user 
+	 * I want to be able to contact the Web Administrators of the site
+	 * So that I can give feedback about the site
+	 * 
+	 * @author Ross Acheson
+	 */
+
+	// Given that I am on the main page
+	// When I open the comments box
+	// Then I should be able to see and select the form input areas
+	@Test
+	public void testCanUseCommentsBox() {
+		foxDriver.get("http://www.calvin.edu");
+		foxDriver.findElement(By.id("habla_sizebutton_a")).click(); // click caret to open box
+		WebElement nameInputArea = foxDriver.findElement(By
+				.id("habla_name_input"));
+		assertTrue(nameInputArea.isDisplayed());
+		nameInputArea.click();
+		nameInputArea.sendKeys("Nombre");
+		// make sure  the focus is still in the input area
+		assertTrue(nameInputArea.equals(foxDriver.switchTo().activeElement())); 
+	}
+
+	// Given that I am on the main page
+	// When I see the comments box
+	// Then I should also be able to remove it from view
+	@Test
+	public void testCanCloseCommentsBox() {
+		foxDriver2.get("http://www.calvin.edu");
+		Dimension desktopSize = new Dimension(1080, 700);
+		foxDriver2.manage().window().setSize(desktopSize);
+		WebElement sizeButton = foxDriver2.findElement(By
+				.id("habla_sizebutton_a"));
+		WebElement closeButton = foxDriver2.findElement(By
+				.id("habla_closebutton_a"));
+		WebElement commentsBar = foxDriver2
+				.findElement(By.id("habla_both_div")); // small clickable area inviting comments
+
+		assertTrue(commentsBar.isDisplayed()); // the minimized comments option should be visible by default
+		sizeButton.click(); // maximize comments box
+		WebElement commentsArea = foxDriver2.findElement(By
+				.id("habla_offline_message_div")); // larger area with form for comments
+		assertTrue(commentsArea.isDisplayed());
+		sizeButton.click(); // minimize comments box again
+		// check if commentsArea is Displayed, if so, fail
+		try {
+			if (commentsArea.isDisplayed())
+				fail();
+		} catch (NoSuchElementException e) {
+			System.out.println("Comments Area successfully minimized.");
+		}
+		closeButton.click(); // close comments box
+		// check if commentsBar is Displayed, if so, fail
+		try {
+			if (commentsBar.isDisplayed())
+				fail();
+		} catch (NoSuchElementException e) {
+			System.out.println("Comments bar successfully closed.");
+		}
+	}
 
 }
